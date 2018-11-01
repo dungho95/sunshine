@@ -14,8 +14,15 @@ class CreateQuyenTable extends Migration
     public function up()
     {
         Schema::create('quyen', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->engine = 'InnoDB'; // Ho tro Relationship
+            $table->unsignedTinyInteger('q_ma')
+                ->autoIncrement()
+                ->comment('Mã quyền');
+            $table->string('q_ten',30)->comment('Tên quyền');
+            $table->string('q_dienGiai',30)->comment('Diễn giải');
+            $table->timestamp('q_taoMoi')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Tạo mới');
+            $table->timestamp('q_capNhat')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Cập nhật ');
+            $table->unsignedTinyInteger('q_trangthai')->comment('1:đóng 2:khả dụng');  
         });
     }
 

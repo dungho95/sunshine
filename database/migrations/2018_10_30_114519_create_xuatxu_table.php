@@ -14,8 +14,14 @@ class CreateXuatxuTable extends Migration
     public function up()
     {
         Schema::create('xuatxu', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->engine = 'InnoDB'; // Ho tro Relationship
+            $table->unsignedTinyInteger('xx_ma')
+                ->autoIncrement()
+                ->comment('Mã xuất xứ');
+            $table->string('xx_ten',50)->comment('Tên xuất xứ');
+            $table->timestamp('xx_taoMoi')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Tạo mới');
+            $table->timestamp('xx_capNhat')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('Cập nhật ');
+            $table->unsignedTinyInteger('xx_trangthai')->comment('1:đóng 2:khả dụng');  
         });
     }
 
