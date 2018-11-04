@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
-class ChuDeTableSeedeer extends Seeder
+class ChuDeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
