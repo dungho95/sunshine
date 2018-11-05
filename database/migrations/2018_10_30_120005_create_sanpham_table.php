@@ -48,11 +48,11 @@ class CreateSanphamTable extends Migration
                 ->unsignedTinyInteger('sp_trangthai')
                 ->comment('1:đóng 2:khả dụng');  
             $table 
-                ->unsignedTinyInteger('l_sp_ma')
+                ->unsignedTinyInteger('l_ma')
                 ->comment('Mã loại');
             
             $table 
-                ->foreign('l_sp_ma')
+                ->foreign('l_ma')
                 ->references('l_ma')
                 ->on('loai');
 
