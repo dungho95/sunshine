@@ -31,3 +31,11 @@ Route::get('/danhsachchude',function(){
    $json = json_encode($ds_chude);
     return $json;
 });
+
+use App\SanPham;
+Route::get('/danhsachsanpham',function(){
+    //Eloquent Model de lay du lieu
+    $ds_sanpham = SanPham::all(); // SELECT * FROM chude
+    $json = json_encode($ds_sanpham);
+    return $json;
+});
