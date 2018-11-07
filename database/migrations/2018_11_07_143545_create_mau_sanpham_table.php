@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHinhanhTable extends Migration
+class CreateMauSanphamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,23 @@ class CreateHinhanhTable extends Migration
      */
     public function up()
     {
-        Schema::create('hinhanh', function (Blueprint $table) {
-       /* $table 
+        Schema::create('mau_sanpham', function (Blueprint $table) {
+        $table->engine = 'InnoDB'; // Ho tro Relationship
+        $table 
             ->unsignedTinyInteger('sp_ma')
             ->comment('Mã sản phẩm');
         $table 
-            ->unsignedTinyInteger('ha_stt')
-            ->comment('Số thứ tự');
-        
+            ->unsignedTinyInteger('cd_ma')
+            ->comment('Mã chủ đề');
         $table 
             ->foreign('sp_ma')
             ->references('sp_ma')
             ->on('sanpham');
+        $table 
+            ->foreign('cd_ma')
+            ->references('cd_ma')
+            ->on('chude');
         
-            $table 
-            ->foreign('l_ma')
-            ->references('l_ma')
-            ->on('loai');
-*/
         });
     }
 
@@ -41,6 +40,6 @@ class CreateHinhanhTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hinhanh');
+        Schema::dropIfExists('mau_sanpham');
     }
 }
