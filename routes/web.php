@@ -41,5 +41,6 @@ Route::get('/danhsachsanpham',function(){
 });
 */
 // tencontroller@action
-Route::get('/admin/danhsachloai','LoaiController@index')->name('danhsachloai.index');
-Route::get('/danhsachchude','ChuDeController@index');
+Route::get('/danhsachloai','LoaiController@index')->name('danhsachloai.index');
+Route::get('/danhsachchude','ChuDeController@index')->name('danhsachchude.index');
+Route::get('/ds_sp','SanPhamController@index')->name('ds_sp.index');

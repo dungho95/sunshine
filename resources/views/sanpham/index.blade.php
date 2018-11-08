@@ -1,11 +1,11 @@
 @extends('backend.layout.index')
 
 @section('title')
-Danh sach loai san pham
+Danh sach san pham
 @endsection
 
 @section('main-content')
-<h1>Hello first action from <span style="color:red;">LoaiController</span></h1>
+<h1>Hello first action from <span style="color:red;">SanPhamController</span></h1>
 
 <table>
     <thead>
@@ -15,10 +15,10 @@ Danh sach loai san pham
         </tr>
     </thead>
     <tbody>
-        @foreach($danhsachloai as $loai)
+        @foreach($ds_sp as $sp)
             <tr>
-                <td>{{ $loai->l_ma}}</td>
-                <td>{{$loai->l_ten}}</td>
+                <td>{{ $sp->sp_ma}}</td>
+                <td>{{$sp->sp_ten}}</td>
             </tr>
         @endforeach
     </tbody>
