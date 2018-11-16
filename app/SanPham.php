@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SanPham extends Model
 {
-    const CREATE_AT ='sp_taoMoi'; //create_at
-    const UPDATE_AT ='sp_capNhat';//create_at
+    const CREATED_AT ='sp_taoMoi'; //create_at
+    const UPDATED_AT ='sp_capNhat';//create_at
 
     protected $table        ='sanpham';
     protected $fillable     =['sp_ten','sp_giaGoc','s_giaBan','sp_hinh','sp_thongTin','sp_danhGia','sp_taoMoi','sp_capNhat','sp_trangThai','l_ma'];

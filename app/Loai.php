@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Loai extends Model
 {
-    const CREATE_AT ='l_taoMoi'; //create_at
-    const UPDATE_AT ='l_capNhat';//create_at
+    const CREATED_AT ='l_taoMoi'; //create_at
+    const UPDATED_AT ='l_capNhat';//create_at
 
     protected $table        ='loai';
     protected $fillable     =['l_ten','l_taoMoi','l_capNhat','l_trangThai'];
