@@ -5,7 +5,8 @@ Danh sach loai san pham
 @endsection
 
 @section('main-content')
-<h1>Hello first action from <span style="color:red;">LoaiController</span></h1>
+<a href="{{route('danhsachloai.create')}}">Thêm mới loại</a>
+<h1><span style="color:red;">DANH SÁCH LOẠI SẢN PHẨM</span></h1>
 <div class="flash-message">
     @foreach(['danger','warning', 'success','info'] as $msg)
         @if(Session::has('alert-'.$msg))
