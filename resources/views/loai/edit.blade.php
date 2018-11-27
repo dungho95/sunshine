@@ -5,6 +5,15 @@ Hieu
 @endsection
 
 @section('main-content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <form role="form" id="frmSuaLoaiSanPham" method="POST" action="{{route('danhsachloai.update',['id'=>$loai->l_ma]) }}">
                    <input type="hidden" name="_method" value="PUT" />
                     {{csrf_field()}}

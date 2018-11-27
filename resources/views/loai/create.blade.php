@@ -6,7 +6,7 @@ Thêm mới loại sản phâm
 
 @section('main-content')
 <h1>Thêm mới loại sản phẩm</h1>
-<form role="form" id="frmThemLoaiSanPham" method="POST" action="{{route('danhsachloai.create')}}">
+<form role="form" id="frmThemLoaiSanPham" method="POST" action="{{route('danhsachloai.create')}}" enctype="multipart/form-data  ">
                    <input type="hidden" name="_method" value="POST" />
                     {{csrf_field()}}
                     <div class="box-body">
@@ -27,7 +27,6 @@ Thêm mới loại sản phâm
                           </div>
                           <div class="form-group">
                             <label for="l_capNhat">Ngày cập nhật</label>
-            
                             <div class="input-group">
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
@@ -44,11 +43,15 @@ Thêm mới loại sản phâm
                               <option value="2">Khả dụng</option>
                             </select>
                           </div>
+                          <div class="input-group">
+                            <label for="sp_hinh">Hình đại diện</label>
+                              <input name="sp_hinh" type="file">
+                          </div>
                     </div>
                     <!-- /.box-body -->
 
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </div>
                 </form>
 @endsection

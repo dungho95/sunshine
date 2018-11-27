@@ -16,30 +16,30 @@ Danh sach loai san pham
 
 </div>
 
-<table>
-    <thead>
-        <tr>
-            <th> Mã </th>
-            <th> Tên </th>
-            <td>Sua</td>
-            <td>Xoa</td>
-        </tr>
+<table  class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+<thead>
+    <tr>
+        <th>Ma</th>
+        <th>Ten</th>
+        <td>Action</td>
+        <td>Xóa</td>
+    </tr>
     </thead>
-    <tbody>
-        @foreach($danhsachloai as $loai)
-            <tr>
-                <td>{{ $loai->l_ma}}</td>
-                <td>{{$loai->l_ten}}</td>
-                <td><a href="{{ route('danhsachloai.edit',['id'=>$loai->l_ma])}}">Sửa</a><td>
-                <td>
-                    <form method="post" action="{{route('danhsachloai.destroy' , ['id'=>$loai->l_ma]) }}">
-                        <input type="hidden" name="_method" value="DELETE" />
-                        {{ csrf_field()}}
-                        <button type="submit" class="btn btn-danger">Xoa</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
+     <tbody>
+    @foreach($danhsachloai as $loai)
+        <tr>
+            <td>{{$loai ->l_ma}}</td>
+            <td>{{$loai ->l_ten}}</td>
+            <td><a href="{{ route('danhsachloai.edit',['id'=> $loai->l_ma]) }}">Sua</a></td>
+            <td>
+                <form method="post" action="{{ route('danhsachloai.destroy',['id'=> $loai->l_ma]) }}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                {{ csrf_field()}}
+                <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
     </tbody>
 </table>
 @endsection

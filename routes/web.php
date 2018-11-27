@@ -50,6 +50,6 @@ Route::get('admin/danhsachloai/{id}','LoaiController@edit')->name('danhsachloai.
 Route::put('admin/danhsachloai/{id}','LoaiController@update')->name('danhsachloai.update');
 Route::delete('admin/danhsachloai/{id}','LoaiController@destroy')->name('danhsachloai.destroy');
 
+Route::resource('admin/danhsachsanpham','SanPhamController');
 
-Route::get('admin/danhsachchude','ChuDeController@index')->name('danhsachchude.index');
-Route::get('admin/ds_sp','SanPhamController@index')->name('ds_sp.index');
+

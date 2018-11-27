@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Loai;
 use Session;
+use App\Http\Requests\LoaiRequest;
 
 use Illuminate\Http\Request;
 
@@ -38,7 +39,11 @@ class LoaiController extends Controller
         $loai->l_capNhat    =$request->l_capNhat;
         $loai->l_trangthai  =$request->l_trangthai;
         $loai->save();
+        Session::flash('alert-info','Cap nhat thang cong roi do ahihi!');
+        return redirect() ->route('danhsachloai.index');
+
     }
+    
      /**
      * Store a newly created resource in storage.
      *
@@ -57,8 +62,21 @@ class LoaiController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(Request $request,$id)
+    public function update(LoaiRequest $request,$id)
     {
+        // $validation = Validator::make($request->all(),[
+        //     'l_ten'=> 'required|unique:loai|max:60',
+        //     'l_taoMoi' => 'required',
+        //     'l_capNhat'=> 'required',
+        //     'l_trangThai'=>'required',
+        // ]);
+
+        // if($validation->fails()){
+        //     return redirect(route('danhsachloai.edit',['id'=>$id]))
+        //                 ->withErrors($validator)
+        //                 ->withInput();
+        // }
+
         $loai = Loai::where("l_ma",$id)->first();
         $loai->l_ten=$request->l_ten;
         $loai->l_taoMoi=$request->l_taoMoi;
