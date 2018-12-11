@@ -43,13 +43,23 @@ Route::get('/danhsachsanpham',function(){
 });
 */
 // tencontroller@action
-Route::get('admin/danhsachloai','LoaiController@index')->name('danhsachloai.index');
-Route::get('admin/danhsachloai/create','LoaiController@create')->name('danhsachloai.create');
-Route::post('admin/danhsachloai/create','LoaiController@store')->name('danhsachloai.store');
-Route::get('admin/danhsachloai/{id}','LoaiController@edit')->name('danhsachloai.edit');
-Route::put('admin/danhsachloai/{id}','LoaiController@update')->name('danhsachloai.update');
-Route::delete('admin/danhsachloai/{id}','LoaiController@destroy')->name('danhsachloai.destroy');
+Route::get('/admin/danhsachloai/print', 'LoaiController@print')->name('danhsachloai.print');
+// Route::get('admin/danhsachloai','LoaiController@index')->name('danhsachloai.index');
+// Route::get('admin/danhsachloai/create','LoaiController@create')->name('danhsachloai.create');
+// Route::post('admin/danhsachloai/create','LoaiController@store')->name('danhsachloai.store');
+// Route::get('admin/danhsachloai/{id}','LoaiController@edit')->name('danhsachloai.edit');
+// Route::put('admin/danhsachloai/{id}','LoaiController@update')->name('danhsachloai.update');
+// Route::delete('admin/danhsachloai/{id}','LoaiController@destroy')->name('danhsachloai.destroy');
+Route::resource('admin/danhsachloai','LoaiController');
 
+
+Route::get('/admin/danhsachsanpham/excel', 'SanPhamController@excel')->name('danhsachsanpham.excel');
+Route::get('/admin/danhsachsanpham/pdf', 'SanPhamController@pdf')->name('danhsachsanpham.pdf');
+Route::get('/admin/danhsachsanpham/print', 'SanPhamController@print')->name('danhsachsanpham.print');
 Route::resource('admin/danhsachsanpham','SanPhamController');
 
+Route::get('/', 'FrontendController@index')->name('frontend.home');
+Route::get('/gioi-thieu', 'FrontendController@about')->name('frontend.about');
+Route::get('/lien-he', 'FrontendController@contact')->name('frontend.contact');
+Route::post('/lien-he/goi-loi-nhan', 'FrontendController@sendMailContactForm')->name('frontend.contact.sendMailContactForm');
 

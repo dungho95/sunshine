@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Sanpham;
 use App\Loai;
+use App\Hinhanh;
 use Session;
 use Storage;
+use App\Exports\SanPhamExport;
+use Maatwebsite\Excel\Facades\Excel as Excel;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class SanPhamController extends Controller
 {
@@ -30,8 +34,14 @@ class SanPhamController extends Controller
      */
     public function create()
     {
-        $ds_loai = Loai::all();
-        return view('sanpham.create')->with('danhsachloai', $ds_loai);
+         // Sử dụng Eloquent Model để truy vấn dữ liệu
+    $ds_loai = Loai::all(); // SELECT * FROM loai
+    // Đường dẫn đến view được quy định như sau: <FolderName>.<ViewName>
+    // Mặc định đường dẫn gốc của method view() là thư mục `resources/views`
+    // Hiển thị view `sanpham.create`
+    return view('sanpham.create')
+        // với dữ liệu truyền từ Controller qua View, được đặt tên là `danhsachloai`
+        ->with('danhsachloai', $ds_loai);
     }
 
     /**
@@ -47,7 +57,7 @@ class SanPhamController extends Controller
             // Cú pháp dùng upload nhiều file
             'sp_hinhanhlienquan.*' => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
         ]);
-
+        
         $sp = new SanPham();
         $sp->sp_ten = $request->sp_ten;
         $sp->sp_giaGoc = $request->sp_giaGoc;
@@ -68,7 +78,21 @@ class SanPhamController extends Controller
             $fileSaved = $file->storeAs('public/photos', $sp->sp_hinh);
         }
         $sp->save();
-
+        // Lưu hình ảnh liên quan
+        if($request->hasFile('sp_hinhanhlienquan')) {
+            $files = $request->sp_hinhanhlienquan;
+            // duyệt từng ảnh và thực hiện lưu
+            foreach ($request->sp_hinhanhlienquan as $index => $file) {
+                
+                $file->storeAs('public/photos', $file->getClientOriginalName());
+                // Tạo đối tưọng HinhAnh
+                $hinhAnh = new HinhAnh();
+                $hinhAnh->sp_ma = $sp->sp_ma;
+                $hinhAnh->ha_stt = ($index + 1);
+                $hinhAnh->ha_ten = $file->getClientOriginalName();
+                $hinhAnh->save();
+            }
+        }
         Session::flash('alert-info', 'Them moi thanh cong ^^~!!!');
         return redirect()->route('danhsachsanpham.index');
     }
@@ -109,6 +133,11 @@ class SanPhamController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validation = $request->validate([
+            'sp_hinh' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
+            // Cú pháp dùng upload nhiều file
+            'sp_hinhanhlienquan.*' => 'image|mimes:jpeg,png,gif,webp|max:2048'
+        ]);
         $sp = SanPham::where("sp_ma",  $id)->first();
         $sp->sp_ten = $request->sp_ten;
         $sp->sp_giaGoc = $request->sp_giaGoc;
@@ -131,6 +160,29 @@ class SanPhamController extends Controller
             // Chép file vào thư mục "photos"
             $fileSaved = $file->storeAs('public/photos', $sp->sp_hinh);
         }
+        // Lưu hình ảnh liên quan
+        if($request->hasFile('sp_hinhanhlienquan')) {
+            // DELETE các dòng liên quan trong table `HinhAnh`
+            foreach($sp->hinhanhlienquan()->get() as $hinhAnh)
+            {
+                // Xóa hình cũ để tránh rác
+                Storage::delete('public/photos/' . $hinhAnh->ha_ten);
+                // Xóa record
+                $hinhAnh->delete();
+            }
+            $files = $request->sp_hinhanhlienquan;
+            // duyệt từng ảnh và thực hiện lưu
+            foreach ($request->sp_hinhanhlienquan as $index => $file) {
+                
+                $file->storeAs('public/photos', $file->getClientOriginalName());
+                // Tạo đối tưọng HinhAnh
+                $hinhAnh = new HinhAnh();
+                $hinhAnh->sp_ma = $sp->sp_ma;
+                $hinhAnh->ha_stt = ($index + 1);
+                $hinhAnh->ha_ten = $file->getClientOriginalName();
+                $hinhAnh->save();
+            }
+        }
         $sp->save();
         Session::flash('alert-info', 'Cập nhật thành công ^^~!!!');
         return redirect()->route('danhsachsanpham.index');
@@ -147,6 +199,14 @@ class SanPhamController extends Controller
         $sp = SanPham::where("sp_ma",  $id)->first();
         if(empty($sp) == false)
         {
+            // DELETE các dòng liên quan trong table `HinhAnh`
+            foreach($sp->hinhanhlienquan()->get() as $hinhAnh)
+            {
+                // Xóa hình cũ để tránh rác
+                Storage::delete('public/photos/' . $hinhAnh->ha_ten);
+                // Xóa record
+                $hinhAnh->delete();
+            }
             // Xóa hình cũ để tránh rác
             Storage::delete('public/photos/' . $sp->sp_hinh);
         }
@@ -154,4 +214,53 @@ class SanPhamController extends Controller
         Session::flash('alert-info', 'Xóa sản phẩm thành công ^^~!!!');
         return redirect()->route('danhsachsanpham.index');
     }
+    public function excel() 
+    {
+        /* Code dành cho việc debug
+        - Khi debug cần hiển thị view để xem trước khi Export Excel
+        */
+        // $ds_sanpham = Sanpham::all();
+        // $ds_loai    = Loai::all();
+        // $data = [
+        //     'danhsachsanpham' => $ds_sanpham,
+        //     'danhsachloai'    => $ds_loai,
+        // ];
+        // return view('sanpham.excel')
+        //     ->with('danhsachsanpham', $ds_sanpham)
+        //     ->with('danhsachloai', $ds_loai);
+        return Excel::download(new SanPhamExport, 'danhsachsanpham.xlsx');
+    }
+        public function pdf() 
+    {
+        $ds_sanpham = Sanpham::all();
+        $ds_loai    = Loai::all();
+        $data = [
+            'danhsachsanpham' => $ds_sanpham,
+            'danhsachloai'    => $ds_loai,
+        ];
+        /* Code dành cho việc debug
+        - Khi debug cần hiển thị view để xem trước khi Export PDF
+        */
+        // return view('sanpham.pdf')
+        //     ->with('danhsachsanpham', $ds_sanpham)
+        //     ->with('danhsachloai', $ds_loai);
+        $pdf = PDF::loadView('sanpham.pdf', $data);
+        return $pdf->download('DanhMucSanPham.pdf');
+    }
+    public function print()
+    {
+        $ds_sanpham = Sanpham::all();
+        $ds_loai    = Loai::all();
+        $data = [
+            'danhsachsanpham' => $ds_sanpham,
+            'danhsachloai'    => $ds_loai,
+        ];
+        return view('sanpham.print')
+            ->with('danhsachsanpham', $ds_sanpham)
+            ->with('danhsachloai', $ds_loai);
+    }
+
 }
+/**
+ * Action hiển thị biểu mẫu xem trước khi in trên Web
+ */

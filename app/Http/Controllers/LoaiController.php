@@ -100,4 +100,14 @@ class LoaiController extends Controller
 
 
     }
+    public function print()
+    {
+        $ds_loai    = Loai::all();
+        $data = [
+            'danhsachloai'    => $ds_loai,
+        ];
+        return view('loai.print')
+            ->with('danhsachloai', $ds_loai);
+    }
+
 }

@@ -6,6 +6,12 @@ Danh sach loai san pham
 
 @section('main-content')
 <a href="{{route('danhsachloai.create')}}">Thêm mới loại</a>
+<!-- Tạo nút xem biểu mẫu khi in trên web
+- Theo quy ước, các route đã được đăng ký trong file `web.php` đều phải được đặt tên để dễ dàng bảo trì code sau này.
+- Đường dẫn URL là đường dẫn được tạo ra bằng route có tên `danhsachsanpham.print`
+- Sẽ có dạng http://tenmiencuaban.com/admin/danhsachsanpham/print
+-->
+<a href="{{ route('danhsachloai.print') }}" class="btn btn-primary">In ấn</a>
 <h1><span style="color:red;">DANH SÁCH LOẠI SẢN PHẨM</span></h1>
 <div class="flash-message">
     @foreach(['danger','warning', 'success','info'] as $msg)
