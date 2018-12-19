@@ -43,42 +43,32 @@
     <div class="menu-desktop">
       <ul class="main-menu">
         <li class="{{ Request::is('') ? 'active-menu' : '' }}">
-          <a href="{{ route('frontend.home') }}">Home</a>
+          <a href="{{ route('frontend.home') }}">Trang chủ</a>
         </li>
-
-        <li>
-          <a href="product.html">Shop</a>
+        <li class="{{ Request::is('san-pham') ? 'active-menu' : '' }}">
+          <a href="{{ route('frontend.product') }}">Sản phẩm</a>
         </li>
-
-        <li class="label1" data-label1="hot">
-          <a href="shoping-cart.html">Features</a>
+        <li class="label1 {{ Request::is('gio-hang') ? 'active-menu' : '' }}" data-label1="hot">
+          <a href="#">Giỏ hàng</a>
         </li>
-
-        <li>
-          <a href="blog.html">Blog</a>
-        </li>
-
         <li class="{{ Request::is('gioi-thieu') ? 'active-menu' : '' }}">
-          <a href="{{ route('frontend.about') }}">About</a>
+          <a href="{{ route('frontend.about') }}">Giới thiệu</a>
         </li>
-
         <li class="{{ Request::is('lien-he') ? 'active-menu' : '' }}">
-          <a href="{{ route('frontend.contact') }}">Contact</a>
+          <a href="{{ route('frontend.contact') }}">Liên hệ</a>
         </li>
       </ul>
     </div>	
 
 
           <!-- Icon header -->
+          <!-- Icon header -->
           <div class="wrap-icon-header flex-w flex-r-m">
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
               <i class="zmdi zmdi-search"></i>
             </div>
-
-            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
-              <i class="zmdi zmdi-shopping-cart"></i>
-            </div>
-
+            <!-- Hiển thị nút summart cart -->
+            <ngcart-summary class="js-show-cart" template-url="{{ asset('vendor/ngCart/template/ngCart/summary.html') }}"></ngcart-summary>
             <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
               <i class="zmdi zmdi-favorite-outline"></i>
             </a>
